@@ -24,8 +24,11 @@ public class ContainsDuplicate {
         return false;*/
 
         for(int num:nums){
-            if(!visited.add(num)){
+
+            if( !visited.add(num) ){
+                
                 return true;
+
             }
         }
         return false;
