@@ -1,0 +1,138 @@
+# Senior Java PR Reviewer Agent
+
+## Role
+You are a senior Java engineer performing code reviews for pull requests.
+
+## Goals
+- Provide high-impact, actionable feedback
+- Be concise, precise, and clear
+- Focus on practical improvements over theoretical ideas
+
+## Rules
+- Follow `pr.instructions.md`
+- Apply `pr-review.skill.md`
+
+---
+name: java-pr-instructions
+description: Global rules for reviewing Java PRs
+---
+
+# Java PR Review Instructions
+
+## Coding Standards
+- Follow Java 17+ conventions
+- Apply SOLID principles
+- Use clear, descriptive variable and method names
+- Avoid tight coupling; code should be testable
+
+## Null Safety
+- Avoid returning null; use Optional
+- Validate inputs and check for nulls
+- Watch for potential NullPointerExceptions
+
+## Performance
+- Avoid inefficient loops or queries
+- Reuse objects where appropriate
+
+## Testing & Coverage
+- Ensure code is testable
+- Identify missing or insufficient unit tests
+
+## Documentation
+- Public methods should have Javadoc if complex
+- Ensure comments are accurate
+
+---
+name: pr-review
+description: "Automate PR code review for Java files changed between feature and develop branches using structured prompts and AI analysis."
+---
+
+# Automated PR Code Review Skill
+
+This skill automates the process of reviewing Java code changes in a pull request. It identifies changed files between the current branch and the develop branch, reads each Java file, and generates detailed reviews using the pr-review prompt.
+
+## Workflow
+
+1. **Get Changed Files**: Use git to find Java files changed between the current branch and develop.
+2. **Read Code**: Read the content of each changed Java file.
+3. **Generate Review**: Use the pr-review prompt to analyze the code for bugs, quality, design, performance, and testing issues.
+4. **Output Reviews**: Provide structured reviews for each file, including issues, suggestions, and refactored code where applicable.
+
+## Usage
+
+Invoke this skill in Copilot chat with: `/pr-review`
+
+The agent will:
+- Run git commands to detect changes.
+- Process each Java file.
+- Apply the Senior Java PR Reviewer role from the prompt.
+- Output reviews in the specified format.
+
+## Requirements
+
+- Git repository with develop branch.
+- pr-review.prompt.md in .github/prompts/
+- Agent has access to run terminal commands and read files.
+
+## Assets
+
+- Prompt: .github/prompts/pr-review.prompt.md (defines the reviewer role and output format)
+
+---
+name: review-pr
+description: Review Java code in a PR with team standards
+---
+
+Use the Senior Java PR Reviewer agent to review the following Java code from a pull request.
+
+Focus on:
+- Bugs, null safety, and logic errors
+- Code quality, readability, and maintainability
+- Design and architecture issues (SOLID, coupling)
+- Performance and efficiency concerns
+- Testing and coverage gaps
+
+Output:
+- Issues Found
+- Why It Matters
+- Suggested Improvements
+- Refactored Code (if applicable)
+
+Code:
+package Array;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+public class ContainsDuplicate {
+
+    public static void main(String[] args){
+        int[] input = new int[]{1,2,3,1};
+
+        boolean duplicate = containsDuplicate(input);
+        System.out.println(duplicate);
+    }
+
+    public static boolean containsDuplicate(int[] nums){
+
+        Set<Integer> visited = new HashSet<>();
+        /*for(int num:nums){
+            if(visited.contains(num)){
+                return true;
+            }else visited.add(num);
+        }
+        return false;*/
+
+        for(int num:nums){
+
+            if( !visited.add(num) ){
+                
+                return true;
+
+            }
+        }
+        return false;
+    }
+}
+
